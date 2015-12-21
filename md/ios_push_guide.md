@@ -135,6 +135,9 @@ AVPush *push = [[AVPush alloc] init];
 ...
 ```
 
+注意：为防止由于大量证书错误产生的性能问题，我们对使用**开发证书**的推送做了设备数量的限制。
+目前当您使用开发证书推送时，至多可以一次性给 20000 个设备进行推送。如果满足您推送条件的设备超过 20000 个，
+系统会拒绝此次推送，并在推送记录页面体现。因此，在开发过程中使用开发证书推送时，请合理设置您的推送条件。
 
 ## 高级定向发送
 
@@ -447,7 +450,7 @@ if (application.applicationState != UIApplicationStateBackground) {
 }
 ```
 
-如果使用 iOS 7 推送的新特性（包括新的 content-available 功能），你需要实现 iOS 7 
+如果使用 iOS 7 推送的新特性（包括新的 content-available 功能），你需要实现 iOS 7
 新加的方法：
 
 ```objc
