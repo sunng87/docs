@@ -108,7 +108,7 @@ signature | 可选 | 签名时间戳（签名参数）
 appid:peerid:convid:nonce:signature_ts
 ```
 
-返回数据格式，JSON 数组，按消息记录从新到旧排序。
+返回数据格式，JSON 数组，按消息记录从新到旧排序。**注意**：系统广播不会出现在消息记录 API 的结果中。
 
 ```json
 [
