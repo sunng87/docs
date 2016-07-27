@@ -575,3 +575,60 @@ peers | 要查询的 ID 列表
 ```json
 {"results":["7u"]}
 ```
+
+## 对话禁言
+
+您可以利用对话禁言 API 对某个 Client ID 在某个对话中禁言一段时间。禁言期间，来自该 ID 的消息
+会被服务器拒绝，不会发给对话中的其他用户。这个功能对普通对话、暂态对话和系统对话均有效。
+
+禁言的时限以秒数为单位，最长时间为 24 小时。
+
+```sh
+curl -X POST \
+  -H "X-LC-Id: {{appid}}" \
+  -H "X-LC-Key: {{masterkey}},master" \
+  -H "Content-Type: application/json" \
+  -d '{"client_id": "some-client-id", "conv_id": "some-conv-id", "ttl": 50}' \
+  https://leancloud.cn/1.1/rtm/conversation/blacklist
+```
+
+参数 | 说明
+--- | ---
+client_id | 要禁言的 id，字符串
+conv_id | 禁言的对话，字符串
+ttl | 禁言的时间，秒数，最长 24 小时
+
+返回：
+
+空 JSON 对象。
+
+```json
+{}
+```
+
+## 强制下线
+
+强制某个 Client ID 断线，与签名配合使用可以实现立刻拒绝某个 Client ID 的登录：更新应用服务器端
+签名逻辑拒绝为某个 Client ID 下发签名，调用此 API 把已经登录的该 ID 的客户端强制下线。
+
+```sh
+curl -X POST \
+  -H "X-LC-Id: {{appid}}" \
+  -H "X-LC-Key: {{masterkey}},master" \
+  -H "Content-Type: application/json" \
+  -d '{"client_id": "some-client-id", "reason": "..."}' \
+  https://leancloud.cn/1.1/rtm/client/kick
+```
+
+参数 | 说明
+--- | ---
+client_id | 要禁言的 id，字符串
+reason | 下线的原因，字符串，不超过 20 个字符
+
+返回：
+
+空 JSON 对象。
+
+```json
+{}
+```
