@@ -622,7 +622,7 @@ curl -X POST \
 
 参数 | 说明
 --- | ---
-client_id | 要禁言的 id，字符串
+client_id | 需要强制下线的 id，字符串
 reason | 下线的原因，字符串，不超过 20 个字符
 
 返回：
