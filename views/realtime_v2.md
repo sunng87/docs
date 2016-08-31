@@ -725,6 +725,11 @@ data | 消息内容
 `4108`|`LOGIN_TIMEOUT`|登录超时，连接后长时间没有完成 session open。通常是登录被拒绝等原因，出现此问题可能是使用方式有误，可以 [创建工单](https://leanticket.cn/t/leancloud)，由我们技术顾问来给出建议。
 `4109`|`FRAME_TOO_LONG`|包过长。消息大小超过 5 KB，请缩短消息或者拆分消息。
 `4110`|`INVALID_ORIGIN`|设置安全域名后，当前登录的域名与安全域名不符合。
+`4111`|`SESSION_CONFLICT`|设置单设备登录后，客户端被其他设备挤下线。
+`4113`|`APP_QUOTA_EXCEEDED`|应用容量超限，当天登录用户数已经超过应用设定的最大值。
+`4114`|`UNPARSEABLE_RAW_MESSAGE`|客户端发送的序列化数据服务器端无法解析。
+`4115`|`KICKED_BY_APP`|客户端被 REST API 管理接口强制下线。
+`4116`|`MESSAGE_SENT_QUOTA_EXCEEDED`|应用单位时间内发送消息量超过限制，消息被拒绝。
 `4200`|`INTERNAL_ERROR`|服务器内部错误，如果反复出现请收集相关线索并 [创建工单](https://leanticket.cn/t/leancloud)，我们会尽快解决。
 `4201`|`SEND_MESSAGE_TIMEOUT`|通过 API 发送消息超时
 `4301`|`CONVERSATION_API_FAILED`|上游 API 调用异常，请查看报错信息了解错误详情
@@ -740,6 +745,9 @@ data | 消息内容
 `4311`|`CONVERSATION_LOG_FAILED`|拉取对话消息记录失败，常见与超时的情况
 `4312`|`CONVERSATION_LOG_REJECTED`|拉取对话消息记录被拒绝，当前用户不在对话中
 `4313`|`SYSTEM_CONVERSATION_REQUIRED`|该功能仅对系统对话有效
+`4314`|`NORMAL_CONVERSATION_REQUIRED`|该功能仅对普通对话有效
+`4315`|`CONVERSATION_BLACKLISTED`|当前用户被加入此对话的黑名单，无法发送消息
+`4316`|`TRANSIENT_CONVERSATION_REQUIRED`|该功能仅对暂态对话有效
 `4401`|`INVALID_MESSAGING_TARGET`|发送消息的对话不存在，或当前用户不在对话中
 `4402`|`MESSAGE_REJECTED_BY_APP`|发送的消息被应用的云引擎 Hook 拒绝
 
