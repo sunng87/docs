@@ -333,6 +333,31 @@ Push 的格式与[推送 REST API 消息内容](push_guide.html#消息内容_Dat
 }
 ```
 
+### 删除系统对话广播消息
+
+调用此 API 将删除已发布的广播消息。
+
+``sh
+curl -X DETELE \
+  -H "X-LC-Id: {{appid}}" \
+  -H "X-LC-Key: {{masterkey}},master" \
+  -G \
+  --data-urlencode 'mid=message-id' \
+  https://leancloud.cn/1.1/rtm/broadcast
+```
+
+参数 | 说明
+--- | ---
+mid | 要删除的消息 id，字符串
+
+返回：
+
+空 JSON 对象。
+
+```json
+{}
+```
+
 ### 富媒体消息格式说明
 富媒体消息的参数格式相对于普通文本来说，仅仅是将 message 参数换成了一个 JSON **字符串**。
 
@@ -597,6 +622,33 @@ curl -X POST \
 client_id | 要禁言的 id，字符串
 conv_id | 禁言的对话，字符串
 ttl | 禁言的时间，秒数，最长 24 小时
+
+返回：
+
+空 JSON 对象。
+
+```json
+{}
+```
+
+## 解除禁言
+
+对通过禁言 API 禁言的 Client ID，开发者可以调用这个 API 在禁言期限到期前提前解除禁言。
+
+```sh
+curl -X DETELE \
+  -H "X-LC-Id: {{appid}}" \
+  -H "X-LC-Key: {{masterkey}},master" \
+  -G \
+  --data-urlencode 'conv_id=some-conv-id' \
+  --data-urlencode 'client_id=some-client-id'
+  https://leancloud.cn/1.1/rtm/conversation/blacklist
+```
+
+参数 | 说明
+--- | ---
+client_id | 要解除禁言的 id，字符串
+conv_id | 禁言的对话，字符串
 
 返回：
 
