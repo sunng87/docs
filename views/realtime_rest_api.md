@@ -633,7 +633,7 @@ ttl | 禁言的时间，秒数，最长 24 小时
 
 ## 解除禁言
 
-对通过禁言 API 禁言的 Client ID，开发者可以调用这个 API 在禁言期限到期前提前解除禁言。
+使用这个 API 可以在禁言期限到期之前，解除被禁言的 Client ID。
 
 ```sh
 curl -X DETELE \
@@ -641,7 +641,7 @@ curl -X DETELE \
   -H "X-LC-Key: {{masterkey}},master" \
   -G \
   --data-urlencode 'conv_id=some-conv-id' \
-  --data-urlencode 'client_id=some-client-id'
+  --data-urlencode 'client_id=some-client-id' \
   https://leancloud.cn/1.1/rtm/conversation/blacklist
 ```
 
