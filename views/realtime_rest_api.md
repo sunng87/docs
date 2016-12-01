@@ -212,7 +212,7 @@ curl -X PUT \
   https://leancloud.cn/1.1/rtm/messages/logs
 ```
 
-这里传入的数据格式与消息记录返回的格式完全一致，只需要按照实际的需求修改相应的字段即可。
+这里传入的数据格式与消息记录返回的格式完全一致，只需要按照实际的需求修改相应的字段即可。需注意修改内容时切勿修改 JSON 中的 `msg-id` 和 `timestamp` 字段，这两个字段用于标识消息，如果修改会造成消息更新失败。
 
 {{ include.imConversationProperties() }}
 
