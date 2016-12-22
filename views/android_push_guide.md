@@ -278,117 +278,6 @@ intent.putExtra(AVConstants.PUSH_INTENT_KEY, 1);
 
 ## 混合推送
 {% if node != 'us' %}
-### 小米推送
-
-#### 环境配置
-
-1. **注册小米账号**：在 [小米开放平台][xiaomi] 上注册小米开发者账号并完成实名认证（[详细流程](http://dev.xiaomi.com/doc/?p=90)）。
-2. **创建小米推送服务应用**（[详细流程](http://dev.xiaomi.com/doc/?p=1621)）。
-3. **设置小米的 AppId 及 AppSecret**：在 [小米开放平台][xiaomi] > **管理控制台** > **消息推送** > **相关应用** 可以查到具体的小米推送服务应用的 AppId 及 AppSecret。将此 AppId 及 AppSecret 通过 {% if node == 'qcloud' %}LeanCloud 控制台 > **消息** > **推送** > **设置** > **混合推送**{% else %}[LeanCloud 控制台 > **消息** > **推送** > **设置** > **混合推送**](/messaging.html?appid={{appid}}#/message/push/conf){% endif %} 与 LeanCloud 应用关联。
-
-#### 接入 SDK
-
-首先导入 `avoscloud-mixpush` 包。修改 `build.gradle` 文件，在 **dependencies** 中添加依赖：
-
-```
-dependencies {
-    compile ('cn.leancloud.android:avoscloud-mixpush:v3.+@aar')
-}
-```
-
-注：如果是通过 jar 包导入，则需要手动下载 jar 包 [小米 Push SDK](http://dev.xiaomi.com/mipush/downpage/)。
-
-然后配置相关 AndroidManifest。添加 Permission：
-
-```xml
-<uses-permission android:name="android.permission.INTERNET" />
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-<uses-permission android:name="android.permission.READ_PHONE_STATE" />
-<uses-permission android:name="android.permission.GET_TASKS" />
-<uses-permission android:name="android.permission.VIBRATE"/>
-<permission android:name="<包名>.permission.MIPUSH_RECEIVE" android:protectionLevel="signature" />
-<uses-permission android:name="<包名>.permission.MIPUSH_RECEIVE" />
-```
-
-添加 service 与 receiver。开发者要将其中的 `<包名>` 替换为自己的应用对应的 package：
-
-```xml
-<service
-  android:name="com.xiaomi.push.service.XMPushService"
-  android:enabled="true"
-  android:process=":pushservice"/>
-
-<service
-  android:name="com.xiaomi.push.service.XMJobService"
-  android:enabled="true"
-  android:exported="false"
-  android:permission="android.permission.BIND_JOB_SERVICE"
-  android:process=":pushservice" />
-
-<service
-  android:name="com.xiaomi.mipush.sdk.PushMessageHandler"
-  android:enabled="true"
-  android:exported="true"/>
-  
-<service
-  android:name="com.xiaomi.mipush.sdk.MessageHandleService"
-  android:enabled="true"/>
-  
-<receiver
-  android:name="com.xiaomi.push.service.receivers.NetworkStatusReceiver"
-  android:exported="true">
-  <intent-filter>
-      <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
-      <category android:name="android.intent.category.DEFAULT"/>
-  </intent-filter>
-</receiver>
-
-<receiver
-  android:name="com.xiaomi.push.service.receivers.PingReceiver"
-  android:exported="false"
-  android:process=":pushservice">
-  <intent-filter>
-      <action android:name="com.xiaomi.push.PING_TIMER"/>
-  </intent-filter>
-</receiver>
-
-<receiver
-  android:name="com.avos.avoscloud.AVMiPushMessageReceiver"
-  android:exported="true">
-  <intent-filter>
-      <action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE"/>
-  </intent-filter>
-  <intent-filter>
-      <action android:name="com.xiaomi.mipush.MESSAGE_ARRIVED"/>
-  </intent-filter>
-  <intent-filter>
-      <action android:name="com.xiaomi.mipush.ERROR"/>
-  </intent-filter>
-</receiver>
-```
-
-#### 具体使用
-
-在 `AVOSCloud.initialize` 时调用以下函数：
-
-```java
-AVMixpushManager.registerXiaomiPush(context, miAppId, miAppKey, profile) 
-```
-
-- 参数 `miAppKey` 需要的是 AppKey，而在控制台的混合推送配置中 Profile 的第二个参数是 AppSecret，请注意区分，并分别正确填写。
-- 参数 `profile` 的用法可以参考 [Android 混合推送多配置区分](push_guide.html#Android_混合推送多配置区分)。
-
-LeanCloud 云端只有在**满足以下全部条件**的情况下才会使用小米推送：
-
-- MIUI 系统
-- manifest 正确填写
-- appId、appKey、appSecret 有效
-
-#### 小米推送通知栏消息的点击事件
-
-当小米通知栏消息被点击后，如果已经设置了 [自定义 Receiver](#自定义_Receiver)，则 SDK 会发送一个 action 为 `com.avos.avoscloud.mi_notification_action` 的 broadcast。如有需要，开发者可以通过订阅此消息获取点击事件，否则 SDK 会默认打开 [启动推送服务](#启动推送服务) 对应设置的 Activity。
-
 
 ### 华为推送
 
@@ -484,7 +373,7 @@ LeanCloud 云端只有在**满足以下全部条件**的情况下才会使用华
 ### 错误排查建议
 
 - 只要注册时有条件不符合，SDK 会在日志中输出导致注册失败的原因，例如「register error, mainifest is incomplete」代表 manifest 未正确填写。如果注册成功，`_Installation` 表中的相关记录应该具有 **vendor** 这个字段并且不为空值。
-- 查看华为小米等机型的设置，并打开「信任此应用」、「开机自启动」、「自启动管理」和「权限管理」等相关选项。
+- 查看华为机型的设置，并打开「信任此应用」、「开机自启动」、「自启动管理」和「权限管理」等相关选项。
 - 如果注册一直失败的话，请去论坛发帖，提供相关日志、具体机型以及系统版本号，我们会跟进协助来排查。
 
 {% endif %}
